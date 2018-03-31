@@ -26,14 +26,17 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-app.use('/completed', completed);
 app.use('/quiz', quiz);
 app.use('/custom', custom)
 
-app.post('/details', function(req,res){
+let details = {
+  language: 'en', Answers: [], Questions: []
+};
+
+app.post('/details', function(req,res) {
   // TODO(phil): Fix this number to not be hard coded
   let num_cards = 4;
-	let details = {
+	details = {
 		Name: req.body.Name,
 		Phone: req.body.Phone,
 		Questions: [],
@@ -46,7 +49,7 @@ app.post('/details', function(req,res){
     details.Questions.push(req.body['Q' + i]);
     details.Answers.push(req.body['A' + i]);
   }
-  req.session.details = details;
+  console.log('details=' + JSON.stringify(req.session.details));
 	res.send(details);
 });
 
@@ -61,9 +64,6 @@ app.post('/', (req, res) => {
     req.session.hasUser = true;
   }
 
-	const details = req.session.details;
-	console.log('details=' + details);
-
   let twiml = new Twilio.twiml.VoiceResponse();
 
   if (!req.session.greeting) {
@@ -72,7 +72,7 @@ app.post('/', (req, res) => {
   }
 
   let SpeechResult = "";
-  if (!req.body.SpeechResult) {
+  if (req.body.SpeechResult) {
     SpeechResult = req.body.SpeechResult.replace('.', '').toLowerCase().trim();
   }
 
@@ -100,21 +100,21 @@ app.post('/', (req, res) => {
         })
         .say({
           voice: 'women',
-          language: req.session.details.language
+          language: details.language
         },
-        req.session.details.Questions[user.num_correct]);
+        details.Questions[user.num_correct]);
       } else {
         twiml.gather({
           input: 'speech',
           timeout: 3,
           action: '/completed',
           voice: 'women',
-          language: req.session.details.language
+          language: details.language
         })
         .say({
           voice: 'women',
         },
-        req.session.details.Answers[user.num_correct]);
+        details.Answers[user.num_correct]);
       }
   }
 
@@ -136,9 +136,8 @@ function incorrect(twiml, res) {
 }
 
 app.post('/completed', (req, res) => {
-	const details = req.session.details;
 	let twiml = new Twilio.twiml.VoiceResponse();
-  let answer = req.body.epeechResult.replace(/(\r\n\t|\n|\r\t)/gm, '').trim();
+  let answer = (req.body.SpeechResult && req.body.SpeechResult.replace(/(\r\n\t|\n|\r\t)/gm, '').trim()) || "";
 
   if (termTranslatedLang) {
     console.log(1, details.Answers[user.num_correct], answer)
