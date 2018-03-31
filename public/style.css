@@ -1,0 +1,37 @@
+header { 
+    display: block;
+}
+
+#regForm {
+    background-color: #ffffff;
+    margin: 100px auto;
+    padding: 40px;
+    width: 70%;
+    min-width: 300px;
+  }
+  
+  input {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+  }
+  
+  input.invalid {
+    background-color: #ffdddd;
+  }
+  
+  .tab {
+    display: none;
+  }
+  
+  .step.active {
+    opacity: 1;
+  }
+  
+  .step.finish {
+    background-color: #4CAF50;
+  }
+
+  

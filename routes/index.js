@@ -7,6 +7,13 @@ const client = require('../twilio_client');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const response = new VoiceResponse();
 
+router.get('/', (req, res) => {
+    res.render('index', {
+        title: 'Test',
+        greeting: 'user'
+    });     
+});
+
 router.post('/', (req, res, next) => {
     response.gather({
         input: 'speech',
