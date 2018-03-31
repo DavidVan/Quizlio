@@ -21,14 +21,13 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/', (req, res, next) => {
-	var details = req.app.get('details');
-
-    response.gather({
-        input: 'speech',
-        action: '/completed'
-    }).say('Hello ' + details.Name + 'Welcome to Quizlio, Thank you for using our product and good luck on your exams!');
-    res.send(response.toString())
-});
+// router.post('/', (req, res, next) => {
+// 	var details = req.app.get('details');
+//     response.gather({
+//         input: 'speech',
+//         action: '/completed'
+//     }).say('Hello ' + details.Name + 'Welcome to Quizlio, Thank you for using our product and good luck on your exams!');
+//     res.send(response.toString())
+// });
 
 module.exports = router;

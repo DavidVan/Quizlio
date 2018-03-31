@@ -19,11 +19,11 @@ router.get('/', (req, res, next) => {
 		from: '+15622474577'
 	})
 
-    response.say("Hello " + Name + ", Welcome to Quizlio!");
     response.redirect({
         method: 'POST'
     }, '/')
     res.send(response.toString())
 });
+
 
 module.exports = router;
