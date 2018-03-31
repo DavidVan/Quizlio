@@ -10,10 +10,14 @@ const index = require('./routes/index');
 const completed = require('./routes/completed');
 const quiz = require('./routes/quiz');
 const custom = require('./routes/custom');
+const client = require('./twilio_client');
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
+const response = new VoiceResponse();
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use('/quiz', quiz);
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -46,12 +50,29 @@ app.post('/details', function(req, res) {
       details.Answers['A' + i] = req.body['A' + i];
     }
     app.set('details', details);
-    res.send(details);
+    res.redirect("/quiz")
+
+});
+
+app.post('/quiz',(req,res) => {
+    const details = app.get('details');
+    let twiml = new Twilio.twiml.VoiceResponse();
+    if(!req.session.hasUser) {
+        user = {num_correct: 0};
+        req.session.hasUser = 1;
+    }
+    client.calls.create({
+        url: 'http://4534a5e5.ngrok.io/',
+        to: details.Phone,
+        from: '+15622474577'
+    }).then(call => process.stdout.write(call.sid));
+
 });
 
 let user = {
     num_correct: 0,
 };
+
 
 app.post('/', (req, res) => {
     const details = app.get('details');
