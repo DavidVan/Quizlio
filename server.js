@@ -91,18 +91,18 @@ app.post('/', (req, res) => {
 });
 
 function incorrect(twiml, res) {
-      twiml.say('That is incorrect.');
-      twiml.gather({
-          input: 'speech',
-          timeout: 3,
-          action: '/'
-      })
-      .say('Do you want to skip?');
-      // twiml.redirect({
-      //   method: 'POST'
-      // }, '/');
+    twiml.say('That is incorrect.');
+    twiml.gather({
+        input: 'speech',
+        timeout: 3,
+        action: '/'
+    })
+    .say('Do you want to skip?');
+    // twiml.redirect({
+    //   method: 'POST'
+    // }, '/');
 
-      res.send(twiml.toString());
+    res.send(twiml.toString());
 }
 
 app.post('/completed', (req, res) => {
@@ -126,7 +126,7 @@ app.post('/completed', (req, res) => {
       incorrect(twiml, res);
     }
   } else {
-    pronunciation = set[user.num_correct][2].replace(/(\r\n\t|\n|\r\t)/gm, '').trim();
+    let pronunciation = set[user.num_correct][2].replace(/(\r\n\t|\n|\r\t)/gm, '').trim();
     console.log(2, pronunciation, answer)
     if (pronunciation == answer)
     {
