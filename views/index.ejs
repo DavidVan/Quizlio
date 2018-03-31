@@ -5,37 +5,40 @@
     <title>Quizlio</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
     <script src="/html.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../public/style.css"/>
 </head>
 <body>
     <header>
 
         <font size="10" color="black">Welcome to Quizlio!</font>
     </header>
+
     <div>
-            <form id="regForm" action="">
+               <form id="regForm" method="post" action="/details">
 
                     Name: <input type="text" name="Name"><br>
                     Phone: <input type="text" name="Phone"><br>
                     <h1>Enter Your Questions:</h1>
                 
                     <div class="tab">Question 1:
-                        <p><input placeholder="Question..." oninput="this.className = ''"></p>
-                        <p><input placeholder="answer..." oninput="this.className = ''"></p>
+                        <p><input placeholder="Question..." name="Q1" oninput="this.className = ''"></p>
+                        <p><input placeholder="answer..." name="A1" oninput="this.className = ''"></p>
                     </div>
                     
                     <div class="tab">Question 2:
-                        <p><input placeholder="Question..." oninput="this.className = ''"></p>
-                        <p><input placeholder="answer..." oninput="this.className = ''"></p>
+                        <p><input placeholder="Question..." name="Q2"oninput="this.className = 'Q2'"></p>
+                        <p><input placeholder="answer..." name="A2" oninput="this.className = 'A2'"></p>
                     </div>
                     
                     <div class="tab">Question 3:
-                        <p><input placeholder="Question..." oninput="this.className = ''"></p>
-                        <p><input placeholder="answer..." oninput="this.className = ''"></p>
+                        <p><input placeholder="Question..." name="Q3" oninput="this.className = 'Q3'"></p>
+                        <p><input placeholder="answer..." name="A3" oninput="this.className = 'A3'"></p>
                     </div>
                     
                     <div class="tab">Question 4:
-                        <p><input placeholder="Question..." oninput="this.className = ''"></p>
-                        <p><input placeholder="answer..." oninput="this.className = ''"></p>
+                        <p><input placeholder="Question..." name="Q4" oninput="this.className = 'Q4'"></p>
+                        <p><input placeholder="answer..." name="A4" oninput="this.className = 'A4'"></p>
                     </div>
                     
                     <div style="overflow:auto;">
