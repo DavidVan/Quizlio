@@ -3,11 +3,16 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 
-const vr = require('../voiceresponse')
+const client = require('../twilio_client');
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
+const response = new VoiceResponse();
 
-// Handle GET request for index page.
 router.post('/', (req, res, next) => {
-    console.log(vr.toString());
+    response.say("You said " + req.body.SpeechResult);
+    response.redirect({
+        method: 'POST'
+    }, '/')
+    res.send(response.toString())
 });
 
 module.exports = router;
