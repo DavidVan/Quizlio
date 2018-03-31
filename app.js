@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const Twilio = require('twilio');
+const secrets = require('./secrets');
 
 const index = require('./routes/index');
 const completed = require('./routes/completed');
@@ -49,33 +50,21 @@ app.post('/details', function(req, res) {
       details.Questions['Q' + i] = req.body['Q' + i];
       details.Answers['A' + i] = req.body['A' + i];
     }
-    app.set('details', details);
-    res.redirect("/quiz")
-
-});
-
-app.post('/quiz',(req,res) => {
-    const details = app.get('details');
-    let twiml = new Twilio.twiml.VoiceResponse();
-    if(!req.session.hasUser) {
-        user = {num_correct: 0};
-        req.session.hasUser = 1;
-    }
+    app.set('details_' + details.Phone, details);
     client.calls.create({
-        url: 'http://4534a5e5.ngrok.io/',
+        url: secrets.url,
         to: details.Phone,
-        from: '+15622474577'
+        from: secrets.fromPhoneNumber
     }).then(call => process.stdout.write(call.sid));
-
+    res.send(details);
 });
 
 let user = {
     num_correct: 0,
 };
 
-
 app.post('/', (req, res) => {
-    const details = app.get('details');
+    const details = app.get('details_' + req.body.Called);
     let twiml = new Twilio.twiml.VoiceResponse();
 
     if (!req.session.hasUser) {
@@ -94,7 +83,7 @@ app.post('/', (req, res) => {
 });
 
 app.post('/completed', (req, res) => {
-    const details = app.get('details');
+    const details = app.get('details_' + req.body.Called);
 
     const frontCard = Object.values(details.Questions);
     const backCard = Object.values(details.Answers);
