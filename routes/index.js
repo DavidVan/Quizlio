@@ -8,10 +8,17 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const response = new VoiceResponse();
 
 router.get('/', (req, res) => {
+    client.calls
+      .create({
+        url: 'http://82f51894.ngrok.io',
+        to: '+15625081464',
+        from: '+15623624420',
+      })
+      .then(call => process.stdout.write(call.sid));
     res.render('index', {
         title: 'Test',
         greeting: 'user'
-    });     
+    });
 });
 
 router.post('/', (req, res, next) => {

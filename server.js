@@ -41,31 +41,49 @@ app.post('/', (req, res) => {
   }
 
   let twiml = new Twilio.twiml.VoiceResponse();
-  twiml.say('Card ' + (user.num_correct + 1));
+  if (req.body.SpeechResult !== undefined) {
+      console.log(req.body.SpeechResult.replace('.', ''))
+  }
+  if (req.body.SpeechResult !== undefined && req.body.SpeechResult.replace('.', '').toLowerCase().trim() === 'yes') {
+      twiml.say('Skipping...');
+      user.num_correct += 1;
+      twiml.redirect({
+        method: 'POST'
+      }, '/');
+  }
+  else if (req.body.SpeechResult !== undefined && req.body.SpeechResult.replace('.', '').toLowerCase().trim() === 'no') {
+      twiml.say('Not skipping. Please try again.');
+      twiml.redirect({
+        method: 'POST'
+      }, '/');
+  }
+  else {
+      twiml.say('Card ' + (user.num_correct + 1));
 
-  if (termTranslatedLang) {
-    twiml.gather({
-      input: 'speech',
-      timeout: 3,
-      action: '/completed',
-    })
-    .say({
-      voice: 'women',
-      language: 'ja-JP'
-    },
-    set[user.num_correct][0]);
-  } else {
-    twiml.gather({
-      input: 'speech',
-      timeout: 3,
-      action: '/completed',
-      voice: 'women',
-      language: 'ja-JP'
-    })
-    .say({
-      voice: 'women',
-    },
-    set[user.num_correct][1]);
+      if (termTranslatedLang) {
+        twiml.gather({
+          input: 'speech',
+          timeout: 3,
+          action: '/completed',
+        })
+        .say({
+          voice: 'women',
+          language: 'ja-JP'
+        },
+        set[user.num_correct][0]);
+      } else {
+        twiml.gather({
+          input: 'speech',
+          timeout: 3,
+          action: '/completed',
+          voice: 'women',
+          language: 'ja-JP'
+        })
+        .say({
+          voice: 'women',
+        },
+        set[user.num_correct][1]);
+      }
   }
 
   res.type('text/xml');
@@ -73,18 +91,23 @@ app.post('/', (req, res) => {
 });
 
 function incorrect(twiml, res) {
-      twiml.say('That is incorrect. Try again.');
-
-      twiml.redirect({
-        method: 'POST'
-      }, '/');
+      twiml.say('That is incorrect.');
+      twiml.gather({
+          input: 'speech',
+          timeout: 3,
+          action: '/'
+      })
+      .say('Do you want to skip?');
+      // twiml.redirect({
+      //   method: 'POST'
+      // }, '/');
 
       res.send(twiml.toString());
 }
 
 app.post('/completed', (req, res) => {
 	let twiml = new Twilio.twiml.VoiceResponse();
-  let answer = req.body.SpeechResult;
+  let answer = req.body.SpeechResult.replace(/(\r\n\t|\n|\r\t)/gm, '').trim();
 
   if (termTranslatedLang) {
     console.log(1, set[user.num_correct][1], answer)
@@ -103,8 +126,9 @@ app.post('/completed', (req, res) => {
       incorrect(twiml, res);
     }
   } else {
-    console.log(2, set[user.num_correct][2], answer)
-    if (set[user.num_correct][2] == answer)
+    pronunciation = set[user.num_correct][2].replace(/(\r\n\t|\n|\r\t)/gm, '').trim();
+    console.log(2, pronunciation, answer)
+    if (pronunciation == answer)
     {
       twiml.say("That is correct. The card back saids ");
       twiml.say({
