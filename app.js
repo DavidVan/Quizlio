@@ -1,10 +1,9 @@
+// @flow
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
-const session = require('express-session')
+const session = require('express-session');
 const Twilio = require('twilio');
-
-
 
 const index = require('./routes/index');
 const completed = require('./routes/completed');
@@ -61,8 +60,6 @@ let user = {
     num_correct: 0,
 };
 let termTranslatedLang = false;
-let usedOnce = 0;
-
 
 app.post('/', (req, res) => {
     const details = app.get('details');
