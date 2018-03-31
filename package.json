@@ -1,0 +1,19 @@
+{
+  "name": "quizlio",
+  "version": "1.0.0",
+  "description": "Group study through calls.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidVan/Quizlio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidVan/Quizlio/issues"
+  },
+  "homepage": "https://github.com/DavidVan/Quizlio#readme"
+}
