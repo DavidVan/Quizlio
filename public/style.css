@@ -14,11 +14,7 @@ body {
         -o-background-size: cover;
         background-size: cover;
 }
-<<<<<<< Updated upstream
-=======
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
 #regForm {
   background-color: rgb(230, 240, 240);
   margin: 100px auto;
@@ -60,7 +56,6 @@ input.invalid {
 .step.active {
   opacity: 1;
 }
-=======
 .regForm {
     background-color: #ffffff;
     margin: 100px auto;
@@ -92,7 +87,6 @@ input.invalid {
   .step.finish {
     background-color: #4CAF50;
   }
->>>>>>> Stashed changes
 
 .step.finish {
   background-color: #4CAF50;
