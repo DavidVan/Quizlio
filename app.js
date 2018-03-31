@@ -1,4 +1,5 @@
 // @flow
+
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
@@ -28,66 +29,87 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-// app.use('/completed', completed);
-// app.use('/quiz', quiz);
-// app.use('/custom', custom)
-app.listen(process.env.PORT || 3000);
-console.log('Server running on port 3000');
+
+app.listen(process.env.PORT || 3000, () => console.log('Server running on port 3000'));
 
 app.post('/details', function(req, res) {
+    let num_cards = 4;
     let details = {
-        Name: req.body.Name,
-        Phone: req.body.Phone,
-        Questions: {
-            Q1: req.body.Q1,
-            Q2: req.body.Q2,
-            Q3: req.body.Q3,
-            Q4: req.body.Q4,
-        },
-        Answers: {
-            A1: req.body.A1,
-            A2: req.body.A2,
-            A3: req.body.A3,
-            A4: req.body.A4,
-        }
+      Name: req.body.Name,
+      Phone: req.body.Phone,
+      Questions: {},
+      Answers: {},
+      Greeting: true
     };
-    res.send(details);
+    for (let i = 1; i <= num_cards; i++) {
+      details.Questions['Q' + i] = req.body['Q' + i];
+      details.Answers['A' + i] = req.body['A' + i];
+    }
     app.set('details', details);
-
+    res.send(details);
 });
 
 let user = {
     num_correct: 0,
 };
-let termTranslatedLang = false;
 
 app.post('/', (req, res) => {
     const details = app.get('details');
-    console.log(details);
-    let frontCard = Object.values(details.Questions);
-    let backCard = Object.values(details.Answers);
+    let twiml = new Twilio.twiml.VoiceResponse();
+
     if (!req.session.hasUser) {
-        user = {
-            num_correct: 0
-        };
-        req.session.hasUser = 1;
+      user = { num_correct: 0 };
+      req.session.hasUser = 1;
+    }
+    if (details.Greeting) {
+        twiml.say("Hello " + details.Name + ". Welcome to Quizlio!");
+        details.Greeting = false;
     }
 
+    const frontCard = Object.values(details.Questions);
+    const backCard = Object.values(details.Answers);
+
+    Ask(frontCard, backCard, req.body.SpeechResult, twiml, res);
+});
+
+app.post('/completed', (req, res) => {
+    const details = app.get('details');
+
+    const frontCard = Object.values(details.Questions);
+    const backCard = Object.values(details.Answers);
+
     let twiml = new Twilio.twiml.VoiceResponse();
-    if (usedOnce == 0) {
-        twiml.say("Hello " + details.Name + ". Welcome to Quizlio!");
-        usedOnce++;
+    const answer = req.body.SpeechResult
+      .replace(/(\r\n\t|\n|\r\t)/gm, '')
+      .replace('.', '')
+      .toLowerCase()
+      .trim();
+
+    if (backCard[user.num_correct].toLowerCase() === answer) {
+        twiml.say('That is correct. The card back saids ' +
+            backCard[user.num_correct]);
+
+        twiml.redirect({
+            method: 'POST'
+        }, '/');
+
+        user.num_correct++;
+
+        res.send(twiml.toString());
     }
-    if (req.body.SpeechResult !== undefined) {
-        console.log(req.body.SpeechResult.replace('.', ''));
+    else {
+        incorrect(twiml, res);
     }
-    if (req.body.SpeechResult !== undefined && req.body.SpeechResult.replace('.', '').toLowerCase().trim() === 'yes') {
+});
+
+function Ask(frontCard, backCard, SpeechResult, twiml, res) {
+    if (SpeechResult !== undefined && SpeechResult.replace('.', '').toLowerCase().trim() === 'yes') {
         twiml.say('Skipping...');
         user.num_correct += 1;
         twiml.redirect({
             method: 'POST'
         }, '/');
-    } else if (req.body.SpeechResult !== undefined && req.body.SpeechResult.replace('.', '').toLowerCase().trim() === 'no') {
+    } else if (SpeechResult !== undefined && SpeechResult.replace('.', '').toLowerCase().trim() === 'no') {
         twiml.say('Not skipping. Please try again.');
         twiml.redirect({
             method: 'POST'
@@ -106,46 +128,17 @@ app.post('/', (req, res) => {
     }
 
     res.type('text/xml');
-    console.log(twiml.toString());
     res.send(twiml.toString());
-});
+}
 
 function incorrect(twiml, res) {
     twiml.say('That is incorrect.');
     twiml.gather({
-            input: 'speech',
-            timeout: 3,
-            action: '/'
-        })
-        .say('Do you want to skip?');
-    // twiml.redirect({
-    //   method: 'POST'
-    // }, '/');
+        input: 'speech',
+        timeout: 3,
+        action: '/'
+    })
+    .say('Do you want to skip?');
 
     res.send(twiml.toString());
 }
-
-app.post('/completed', (req, res) => {
-    const details = app.get('details');
-    let frontCard = Object.values(details.Questions);
-    let backCard = Object.values(details.Answers);
-    let twiml = new Twilio.twiml.VoiceResponse();
-    let answer = req.body.SpeechResult.replace(/(\r\n\t|\n|\r\t)/gm, '').replace('.', '').toLowerCase().trim();
-
-    console.log(1, backCard[user.num_correct].toLowerCase(), answer)
-
-    if (backCard[user.num_correct].toLowerCase() === answer) {
-        twiml.say('That is correct. The card back saids ' + backCard[user.num_correct]);
-
-        twiml.redirect({
-            method: 'POST'
-        }, '/');
-
-        user.num_correct++;
-
-        res.send(twiml.toString());
-    }
-    else {
-        incorrect(twiml, res);
-    }
-});
