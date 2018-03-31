@@ -3,11 +3,10 @@ const path = require('path');
 const express = require('express');
 const router = express.Router();
 
-const accountSid = fs.readFileSync(path.join(__dirname, '../TwilioAccountSID'), 'utf8').replace(/\r?\n|\r/g,'');
-const authToken = fs.readFileSync(path.join(__dirname, '../TwilioAuthKey'), 'utf8').replace(/\r?\n|\r/g,'');
+const secrets = require('../secrets')
 
 const twilio = require('twilio');
-const client = new twilio(accountSid, authToken);
+const client = new twilio(secrets.accountSid, secrets.authToken);
 
 // Handle GET request for index page.
 router.get('/', (req, res, next) => {
