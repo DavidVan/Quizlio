@@ -24,6 +24,10 @@ app.set('view engine', 'ejs');
 const set = fs.readFileSync('exampleset2', 'utf8')
   .split('\n').map(card => card.split(','));
 
+// NOTE(phil): switch between term or definition of which is the translated
+// language to pronouce.
+// TODO(phil): This will be remove and be read in by the card set as it should
+// contain the languages the card set has
 let termTranslatedLang = false;
 
 let user = {
