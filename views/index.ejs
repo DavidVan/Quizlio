@@ -15,13 +15,18 @@
     </header>
 
     <div>
+<<<<<<< Updated upstream
                <form id="regForm" method="post" action="/details">
+=======
+            <form id="regForm" action="details">
+>>>>>>> Stashed changes
 
                     Name: <input type="text" name="Name"><br>
                     Phone: <input type="text" name="Phone"><br>
                     <h1>Enter Your Questions:</h1>
                 
                     <div class="tab">Question 1:
+<<<<<<< Updated upstream
                         <p><input placeholder="Question..." name="Q1" oninput="this.className = ''"></p>
                         <p><input placeholder="answer..." name="A1" oninput="this.className = ''"></p>
                     </div>
@@ -39,6 +44,27 @@
                     <div class="tab">Question 4:
                         <p><input placeholder="Question..." name="Q4" oninput="this.className = 'Q4'"></p>
                         <p><input placeholder="answer..." name="A4" oninput="this.className = 'A4'"></p>
+=======
+                        <p>Question: <input type="text" name="Name"><br></p>
+                        <p>Answer: <input type="text" name="Phone"><br></p>
+                    </div>
+                    
+                    <div class="tab">Question 2:
+                            <p>Question: <input type="text" name="Name"><br></p>
+                            <p>Answer: <input type="text" name="Phone"><br></p>
+                    </div>
+                    
+                    <div class="tab">Question 3:
+                            <p>Question: <input type="text" name="Name"><br></p>
+                            <p>Answer: <input type="text" name="Phone"><br></p>
+                    </div>
+                    
+                    <div class="tab">Question 4:
+                            <p>Question: <input type="text" name="Name"><br></p>
+                            <p>Answer: <input type="text" name="Phone"><br></p>
+                       <!-- <p><input placeholder="Question..." oninput="this.className = ''"></p>
+                        <p><input placeholder="answer..." oninput="this.className = ''"></p>-->
+>>>>>>> Stashed changes
                     </div>
                     
                     <div style="overflow:auto;">
@@ -56,6 +82,8 @@
                           </div>
         </form>
     </div>
+
+    
     <script>
     var currentTab = 0;
 showTab(currentTab);
