@@ -8,8 +8,10 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const response = new VoiceResponse();
 
 router.post('/', (req, res, next) => {
-    console.log(req.body.SpeechResult.toLowerCase());
     response.say("You said " + req.body.SpeechResult);
+    response.redirect({
+        method: 'POST'
+    }, '/')
     res.send(response.toString())
 });
 
