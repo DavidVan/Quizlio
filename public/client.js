@@ -21,8 +21,10 @@ var app = new Vue({
     prev: function() {
       let card = cards.pop();
 
-      this.front = card.front;
-      this.back = card.back;
+      if (card) {
+        this.front = card.front;
+        this.back = card.back;
+      }
     },
     next: function() {
       if (this.name &&
@@ -68,25 +70,23 @@ var app = new Vue({
       this.phone = cardsets[value].phone;
       this.cardset = cardsets[value].cardset;
       this.language = cardsets[value].language;
-      if (cardsets[value].length > 0) {
+      if (cardsets[value].cards.length > 0) {
         this.front = cardsets[value].cards[0].front;
         this.back = cardsets[value].cards[0].back;
         this.route = CREATE_A_CARD_ROUTE;
       }
     },
     start: function(value) {
-      var data = {
-        Name: cardsets[value].name,,
+      var cards = JSON.parse(JSON.stringify(cardsets[value].cards));
+      var data = JSON.parse(JSON.stringify({
+        Name: cardsets[value].name,
         Phone: '+1' + cardsets[value].phone,
         Questions: {},
-        Answers: {}
-      };
-      var cards = cardsets[value].cards;
-      for (var i = 0; i < cards.length; i++) {
-        data.Questions['Q' + i] = cards[i].front;
-        data.Answers['A' + i] = cards[i].back;
-      }
-      axios.post('/', data)
+        Answers: {},
+        NumCards: cards.length,
+        cards: cards
+      }));
+      axios.post('/details', data)
       .then(function (response) {
         console.log(response);
       })

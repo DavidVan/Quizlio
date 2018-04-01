@@ -41,7 +41,7 @@ app.use(session({
 app.listen(process.env.PORT || 3000, () => console.log('Server running on port 3000'));
 
 app.post('/details', function(req, res) {
-    let num_cards = 4;
+    let num_cards = req.body.NumCards || 4;
     let details = {
         Name: req.body.Name,
         Phone: req.body.Phone,
@@ -56,11 +56,19 @@ app.post('/details', function(req, res) {
           num_correct: 0
         }
     };
-    for (let i = 1; i <= num_cards; i++) {
-        details.Questions['Q' + i] = req.body['Q' + i];
-        details.Answers['A' + i] = req.body['A' + i];
+    if (req.body.cards) {
+      for (var i = 1; i <= num_cards; i++) {
+        details.Questions['Q' + i] = req.body.cards[i-1].front;
+        details.Answers['A' + i] = req.body.cards[i-1].back;
+      }
+    } else {
+      for (let i = 1; i <= num_cards; i++) {
+          details.Questions['Q' + i] = req.body['Q' + i];
+          details.Answers['A' + i] = req.body['A' + i];
+      }
     }
     app.set('details_' + details.Phone, details);
+    console.log(details);
     client.calls.create({
         url: secrets.url,
         to: details.Phone,
