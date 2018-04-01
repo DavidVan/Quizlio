@@ -76,7 +76,7 @@ app.post('/details', function(req, res) {
       }
     }
     app.set('details_' + details.Phone, details);
-    console.log(details);
+    console.log(details)
     client.calls.create({
         url: secrets.url,
         to: details.Phone,
@@ -132,8 +132,11 @@ app.post('/completed', (req, res) => {
     if (details.Mode === 'question' && backCard[user.num_correct].toLowerCase() === answer) {
         twiml.say({
                 voice: 'woman',
-            }, 'That is correct. The card back saids ' + backCard[user.num_correct]);
-
+            }, 'That is correct. The card back saids ');
+        twiml.say({
+                voice: 'woman',
+                language: details.Language
+            }, backCard[user.num_correct]);
         twiml.redirect({
             method: 'POST'
         }, '/');
@@ -147,7 +150,11 @@ app.post('/completed', (req, res) => {
             let vocabAnswer =  details.Flipped ? frontCard[user.num_correct] : backCard[user.num_correct];
             twiml.say({
                     voice: 'woman',
-                }, 'That is correct. The card says ' + vocabAnswer);
+                }, 'That is correct. The card says ');
+            twiml.say({
+                voice: 'woman',
+                language: details.Language
+            }, vocabAnswer);
 
             twiml.redirect({
                 method: 'POST'
@@ -210,8 +217,7 @@ function incorrect(twiml, res, details) {
             input: 'speech',
             timeout: 6,
             action: '/',
-            voice: 'woman',
-            language: details.Language
+            voice: 'woman'
         })
         .say({
             voice: 'woman',
