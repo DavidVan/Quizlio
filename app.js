@@ -190,19 +190,26 @@ function Ask(frontCard, backCard, SpeechResult, twiml, res, user, details) {
         }, '/');
     }
     else {
-        twiml.say({
-                voice: 'woman',
-            }, 'Card ' + (user.num_correct + 1));
-        twiml.gather({
-                input: 'speech',
-                timeout: 6,
-                action: '/completed',
-                voice: 'woman',
-                language: details.Language
-            })
-            .say({
+        if (user.num_correct < Object.keys(details.Answers).length) {
+            twiml.say({
                     voice: 'woman',
-                }, frontCard[user.num_correct]);
+                }, 'Card ' + (user.num_correct + 1));
+            twiml.gather({
+                    input: 'speech',
+                    timeout: 6,
+                    action: '/completed',
+                    voice: 'woman',
+                    language: details.Language
+                })
+                .say({
+                        voice: 'woman',
+                    }, frontCard[user.num_correct]);
+        }
+        else {
+            twiml.say({
+                    voice: 'woman',
+                }, 'Thank you for using Quizlio. Goodbye.');
+        }
     }
 
     res.type('text/xml');
