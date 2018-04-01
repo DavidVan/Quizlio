@@ -58,8 +58,11 @@ app.post('/details', function(req, res) {
     };
     if (req.body.cards) {
       for (var i = 1; i <= num_cards; i++) {
-        details.Questions['Q' + i] = req.body.cards[i-1].front;
-        details.Answers['A' + i] = req.body.cards[i-1].back;
+        let card = req.body.cards[i-1];
+        if (card) {
+          details.Questions['Q' + i] = card.front;
+          details.Answers['A' + i] = card.back;
+        }
       }
     } else {
       for (let i = 1; i <= num_cards; i++) {
