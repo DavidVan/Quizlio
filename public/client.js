@@ -68,7 +68,7 @@ var app = new Vue({
       console.log(value)
       this.name =  cardsets[value].name;
       this.phone = cardsets[value].phone;
-      this.cardset = cardsets[value].cardset;
+      this.cardset = value;
       this.language = cardsets[value].language;
       if (cardsets[value].cards.length > 0) {
         this.front = cardsets[value].cards[0].front;
