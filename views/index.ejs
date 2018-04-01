@@ -1,119 +1,293 @@
 <!DOCTYPE html>
-<html>
 
-<head>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Quizlio</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
-    <script src="/html.js"></script>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css" />
+<style>
+body {
+  background: url(background.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 
-    <link rel="stylesheet" type="text/css" href="../public/style.css"/>
-</head>
-<body>
-    <header>
+.outer {
+  background: url(background.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 
-        <font size="10" color="black">Welcome to Quizlio!</font>
-    </header>
+  
+  color: rgb(175, 224, 220);
+  font-size: 24px;
+  color: rgb(175, 224, 220);
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
 
-    <div>
-             <form id="regForm" method="post" action="/details">
-                    Name: <input type="text" name="Name"><br>
-                    Phone: <input type="text" name="Phone"><br>
-                    <h1>Enter Your Questions:</h1>
-                
-                    <div class="tab">Question 1:
-                        <p><input placeholder="Question..." name="Q1" oninput="this.className = ''"></p>
-                        <p><input placeholder="answer..." name="A1" oninput="this.className = ''"></p>
-                    </div>
-                    
-                    <div class="tab">Question 2:
-                        <p><input placeholder="Question..." name="Q2"oninput="this.className = 'Q2'"></p>
-                        <p><input placeholder="answer..." name="A2" oninput="this.className = 'A2'"></p>
-                    </div>
-                    
-                    <div class="tab">Question 3:
-                        <p><input placeholder="Question..." name="Q3" oninput="this.className = 'Q3'"></p>
-                        <p><input placeholder="answer..." name="A3" oninput="this.className = 'A3'"></p>
-                    </div>
-                    
-                    <div class="tab">Question 4:
-                        <p><input placeholder="Question..." name="Q4" oninput="this.className = 'Q4'"></p>
-                        <p><input placeholder="answer..." name="A4" oninput="this.className = 'A4'"></p>
-                    </div>
-                    
-                    <div style="overflow:auto;">
-                        <div style="float:right;">
-                            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                        </div>
-                    </div>
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
 
-                    <div style="text-align:center;margin-top:40px;">
-                            <span class="step"></span>
-                            <span class="step"></span>
-                            <span class="step"></span>
-                            <span class="step"></span>
-                          </div>
-        </form>
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10em;
+}
+
+#formBox{
+
+  color: rgb(175, 224, 220);
+  font-weight: bold;
+  color: rgb(175, 224, 220);
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  background-color: rgb(230, 240, 240);
+  margin: 100px auto;
+  padding: 50px;
+  width: 80%;
+  min-width: 300px;
+  border: 2px solid rgb(100, 200, 175);
+  border-radius: 8px;
+}
+
+#nextBtn{
+  background-color: rgb(175, 224, 220);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 30px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+#prevBtn{
+  background-color: rgb(175, 224, 220);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 30px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+#saveBtn{
+  background-color:rgb(175, 224, 220);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 30px 50px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+</style>
+  </head>
+  <body>
+
+    <div id="client_app">
+    <div class="container is-widescreen">
+      <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <template v-if="route">
+          <li><a href="#" v-on:click="setRoute1"><strong>Quizlio</strong></a></li>
+          <li><a href="#" v-on:click="setRoute2">Card sets</a></li>
+          </template>
+          <template v-if="!route">
+          <li><a href="#" v-on:click="setRoute1">Quizlio</a></li>
+          <li><a href="#" v-on:click="setRoute2"><strong>Card sets</strong></a></li>
+          </template>
+        </ul>
+      </nav>
     </div>
 
-    
-    <script>
-    var currentTab = 0;
-showTab(currentTab);
+    <div v-show="route" class="outer"><div v-show="route" class="middle">
+        <div v-show="route" class="inner">
 
-function showTab(n) {
-  var x = document.getElementsByClassName("tab");
-  x[n].style.display = "block";
-  if (n == 0) {
-    document.getElementById("prevBtn").style.display = "none";
-  } else {
-    document.getElementById("prevBtn").style.display = "inline";
-  }
-  if (n == (x.length - 1)) {
-    document.getElementById("nextBtn").innerHTML = "Submit";
-  } else {
-    document.getElementById("nextBtn").innerHTML = "Next";
-  }
-  fixStepIndicator(n)
-}
+    <div id="formBox">
 
-function nextPrev(n) {
-  var x = document.getElementsByClassName("tab");
-  if (n == 1 && !validateForm()) return false;
-  x[currentTab].style.display = "none";
-  currentTab = currentTab + n;
-  if (currentTab >= x.length) {
-    document.getElementById("regForm").submit();
-    return false;
-  }
-  showTab(currentTab);
-}
+    <div class="container is-widescreen">
+      <template v-if="route">
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <label class="label"><font color="PaleTurquoise">Your Name</font></label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <input class="input" type="text" placeholder="Name" v-model="name">
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+            </p>
+          </div>
+          <div class="field-label"></div>
+          <div class="field-body">
+            <div class="field is-expanded">
+              <div class="field has-addons">
+                <p class="control">
+                <a class="button is-static">
+                    <font color="PaleTurquoise">+1</font>
+                </a>
+                </p>
+                <p class="control is-expanded">
+                <input v-model="phone" class="input" type="tel" placeholder="Your phone number">
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-function validateForm() {
-  var x, y, i, valid = true;
-  x = document.getElementsByClassName("tab");
-  y = x[currentTab].getElementsByTagName("input");
-  for (i = 0; i < y.length; i++) {
-    if (y[i].value == "") {
-      y[i].className += " invalid";
-      valid = false;
-    }
-  }
-  if (valid) {
-    document.getElementsByClassName("step")[currentTab].className += " finish";
-  }
-  return valid;
-}
+      </div>
 
-function fixStepIndicator(n) {
-  var i, x = document.getElementsByClassName("step");
-  for (i = 0; i < x.length; i++) {
-    x[i].className = x[i].className.replace(" active", "");
-  }
-  x[n].className += " active";
-}
-    </script>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"><font color="PaleTurquoise">Card set's name</font></label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+              <input class="input" type="text" placeholder="Japanese Lifestyle, Business, and Culture" v-model="cardset">
+            </div>
 
-</body>
+          <div class="field-label">
+            <label class="label"><font color="PaleTurquoise">Language</font></label>
+          </div>
+          <div class="field-body">
+            <div class="control">
+              <div class="select">
+                <select v-model="language">
+                  <option value="en-US">English, United States</option>
+                  <option value="da-DK">Danish, Denmark</option>
+                  <option value="de-DE">German, Germany</option>
+                  <option value="en-AU">English, Australia</option>
+                  <option value="en-CA">English, Canada</option>
+                  <option value="en-GB">English, UK</option>
+                  <option value="en-IN">English, India</option>
+                  <option value="ca-ES">Catalan, Spain</option>
+                  <option value="es-ES">Spanish, Spain</option>
+                  <option value="es-MX">Spanish, Mexico</option>
+                  <option value="fi-FI">Finnish, Finland</option>
+                  <option value="fr-CA">French, Canada</option>
+                  <option value="fr-FR">French, France</option>
+                  <option value="it-IT">Italian, Italy</option>
+                  <option value="ja-JP">Japanese, Japan</option>
+                  <option value="ko-KR">Korean, Korea</option>
+                  <option value="nb-NO">Norwegian, Norway</option>
+                  <option value="nl-NL">Dutch, Netherlands</option>
+                  <option value="pl-PL">Polish-Poland</option>
+                  <option value="pt-BR">Portuguese, Brazil</option>
+                  <option value="pt-PT">Portuguese, Portugal</option>
+                  <option value="ru-RU">Russian, Russia</option>
+                  <option value="sv-SE">Swedish, Sweden</option>
+                  <option value="zh-CN">Chinese (Mandarin)</option>
+                  <option value="zh-HK">Chinese (Cantonese)</option>
+                  <option value="zh-TW">Chinese (Taiwanese Mandarin)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          </div>
+      </div>
 
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"><font color="PaleTurquoise">Front</font></label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input class="input" type="text" placeholder="Question" v-model="front">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label"><font color="PaleTurquoise">Back</font></label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <textarea class="textarea" placeholder="Answer" v-model="back"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <br />
+
+    <div class="columns is-mobile is-centered">
+      <div class="column is-narrow">
+        <a id="prevBtn" class="button" v-on:click="prev">Previous</a>
+      </div>
+      <div class="column is-narrow">
+        <a id="saveBtn" class="button" v-on:click="save">Save</a>
+      </div>
+      <div class="column is-narrow">
+        <a id="nextBtn" class="button" v-on:click="next">Next</a>
+      </div>
+    </div>
+    </template>
+
+    </div>
+    </div> </div> </div>
+
+  </div>
+
+    <template v-if="!route">
+      <div class="container">
+        <h1 class="is-size-1">Card sets</h1>
+        <ul>
+          <li v-for="value in Object.keys(cardsets)">
+            - {{ value }}
+            &nbsp; <a href="#" v-on:click="edit(value)">Edit</a>
+            |&nbsp; <a href="#" v-on:click="start(value)">Start a Quizlio session with this card set</a>
+          </li>
+        </ul>
+      </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="client.js"></script>
+
+  </body>
 </html>
