@@ -191,7 +191,7 @@ function Ask(frontCard, backCard, SpeechResult, twiml, res, user, details) {
                 timeout: 6,
                 action: '/completed',
                 voice: 'woman',
-                language: details.language
+                language: details.Language
             })
             .say({
                     voice: 'woman',
@@ -211,7 +211,7 @@ function incorrect(twiml, res, details) {
             timeout: 6,
             action: '/',
             voice: 'woman',
-            language: details.language
+            language: details.Language
         })
         .say({
             voice: 'woman',
