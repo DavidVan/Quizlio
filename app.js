@@ -57,9 +57,13 @@ app.post('/details', function(req, res) {
         }
     };
     if (req.body.cards) {
-      for (var i = 1; i <= num_cards; i++) {
-        let card = req.body.cards[i-1];
-        if (card) {
+      if (num_cards == 1) {
+        let card = req.body.cards[0];
+        details.Questions['Q1'] = card.front;
+        details.Answers['A1'] = card.back;
+      } else {
+        for (var i = 1; i <= num_cards; i++) {
+          let card = req.body.cards[i-1];
           details.Questions['Q' + i] = card.front;
           details.Answers['A' + i] = card.back;
         }
