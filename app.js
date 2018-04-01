@@ -51,6 +51,7 @@ app.post('/details', function(req, res) {
         Flipped: false, // placeholder. use above
         Questions: {},
         Answers: {},
+        Language: req.body.Language || 'en',
         Greeting: true,
         User: {
           num_correct: 0
@@ -189,7 +190,8 @@ function Ask(frontCard, backCard, SpeechResult, twiml, res, user) {
                 input: 'speech',
                 timeout: 6,
                 action: '/completed',
-                voice: 'woman'
+                voice: 'woman',
+                language: details.language
             })
             .say({
                     voice: 'woman',
@@ -208,7 +210,8 @@ function incorrect(twiml, res) {
             input: 'speech',
             timeout: 6,
             action: '/',
-            voice: 'woman'
+            voice: 'woman',
+            language: details.language
         })
         .say({
             voice: 'woman',

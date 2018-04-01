@@ -84,6 +84,7 @@ var app = new Vue({
         Questions: {},
         Answers: {},
         NumCards: cards.length,
+        Language: cardsets[value].language,
         cards: cards
       }));
       axios.post('/details', data)
