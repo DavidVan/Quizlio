@@ -61,7 +61,8 @@ app.post('/details', function(req, res) {
         url: secrets.url,
         to: details.Phone,
         from: secrets.fromPhoneNumber
-    }).then(call => process.stdout.write(call.sid));
+    }).then(call => process.stdout.write(call.sid))
+    .catch(err => console.error(err));
     res.send(details);
 });
 
@@ -77,7 +78,7 @@ app.post('/', (req, res) => {
     const frontCard = Object.values(details.Questions);
     const backCard = Object.values(details.Answers);
 
-    Ask(frontCard, backCard, req.body.SpeechResult, twiml, res);
+    Ask(frontCard, backCard, req.body.SpeechResult, twiml, res, details);
 });
 
 app.post('/completed', (req, res) => {
@@ -110,7 +111,7 @@ app.post('/completed', (req, res) => {
     }
 });
 
-function Ask(frontCard, backCard, SpeechResult, twiml, res) {
+function Ask(frontCard, backCard, SpeechResult, twiml, res, details) {
     if (SpeechResult !== undefined && SpeechResult.replace('.', '').toLowerCase().trim() === 'yes') {
         twiml.say('Skipping...');
         details.User.num_correct += 1;
