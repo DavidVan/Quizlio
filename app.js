@@ -102,14 +102,14 @@ app.post('/', (req, res) => {
 
     if (details.Mode === 'vocab') {
         if (details.Flipped) {
-            Ask(backCard, frontCard, req.body.SpeechResult, twiml, res, user);
+            Ask(backCard, frontCard, req.body.SpeechResult, twiml, res, user, details);
         }
         else {
-            Ask(frontCard, backCard, req.body.SpeechResult, twiml, res, user);
+            Ask(frontCard, backCard, req.body.SpeechResult, twiml, res, user, details);
         }
     }
     else { // otherwise, question mode
-        Ask(frontCard, backCard, req.body.SpeechResult, twiml, res, user);
+        Ask(frontCard, backCard, req.body.SpeechResult, twiml, res, user, details);
     }
 });
 
@@ -156,15 +156,15 @@ app.post('/completed', (req, res) => {
             res.send(twiml.toString());
         }
         else {
-            incorrect(twiml, res);
+            incorrect(twiml, res, details);
         }
     }
     else {
-        incorrect(twiml, res);
+        incorrect(twiml, res, details);
     }
 });
 
-function Ask(frontCard, backCard, SpeechResult, twiml, res, user) {
+function Ask(frontCard, backCard, SpeechResult, twiml, res, user, details) {
     if (SpeechResult !== undefined && SpeechResult.replace('.', '').toLowerCase().trim() === 'yes') {
         twiml.say({
                 voice: 'woman',
@@ -202,7 +202,7 @@ function Ask(frontCard, backCard, SpeechResult, twiml, res, user) {
     res.send(twiml.toString());
 }
 
-function incorrect(twiml, res) {
+function incorrect(twiml, res, details) {
     twiml.say({
             voice: 'woman',
         }, 'That is incorrect.');
