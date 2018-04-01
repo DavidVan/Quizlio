@@ -29,6 +29,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use('/', index);
+app.get('/index2', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index2.html'));
+})
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
