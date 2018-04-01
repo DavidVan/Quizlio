@@ -64,8 +64,7 @@ body {
   margin: 100px auto;
   padding: 50px;
   width: 80%;
-  min-width: 200px;
-  max-width: 500;
+  min-width: 300px;
   border: 2px solid rgb(100, 200, 175);
   border-radius: 8px;
 }
@@ -118,6 +117,17 @@ body {
   transition-duration: 0.4s;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
+#pnumBox{
+width:200px;
+}
+#fontBox{
+  width:200px;
+  max-width:250px;
+}
+#backBox{
+  width:200px;
+  max-width: 250px;
+}
 </style>
   </head>
   <body>
@@ -167,7 +177,7 @@ body {
                 </a>
                 </p>
                 <p class="control is-expanded">
-                <input v-model="phone" class="input" type="tel" placeholder="Your phone number">
+                <input id="pnumBox" v-model="phone" class="input" type="tel" placeholder="Your phone number">
                 </p>
               </div>
             </div>
@@ -232,7 +242,7 @@ body {
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input class="input" type="text" placeholder="Question" v-model="front">
+              <input id="frontBox" class="input" type="text" placeholder="Question" v-model="front">
             </div>
           </div>
         </div>
@@ -245,7 +255,7 @@ body {
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <textarea class="textarea" placeholder="Answer" v-model="back"></textarea>
+              <textarea id="backBox" class="textarea" placeholder="Answer" v-model="back"></textarea>
             </div>
           </div>
         </div>
