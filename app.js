@@ -28,6 +28,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.set('view engine', 'ejs');
 
+app.get('/index2', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index2.html'));
+});
 app.use('/', index);
 app.use(session({
     secret: 'keyboard cat',
@@ -44,7 +47,10 @@ app.post('/details', function(req, res) {
       Phone: req.body.Phone,
       Questions: {},
       Answers: {},
-      Greeting: true
+      Greeting: true,
+      User: {
+        num_correct: 0
+      }
     };
     for (let i = 1; i <= num_cards; i++) {
       details.Questions['Q' + i] = req.body['Q' + i];
@@ -59,18 +65,10 @@ app.post('/details', function(req, res) {
     res.send(details);
 });
 
-let user = {
-    num_correct: 0,
-};
-
 app.post('/', (req, res) => {
     const details = app.get('details_' + req.body.Called);
     let twiml = new Twilio.twiml.VoiceResponse();
 
-    if (!req.session.hasUser) {
-      user = { num_correct: 0 };
-      req.session.hasUser = 1;
-    }
     if (details.Greeting) {
         twiml.say("Hello " + details.Name + ". Welcome to Quizlio!");
         details.Greeting = false;
@@ -95,15 +93,15 @@ app.post('/completed', (req, res) => {
       .toLowerCase()
       .trim();
 
-    if (backCard[user.num_correct].toLowerCase() === answer) {
+    if (backCard[details.User.num_correct].toLowerCase() === answer) {
         twiml.say('That is correct. The card back saids ' +
-            backCard[user.num_correct]);
+            backCard[details.User.num_correct]);
 
         twiml.redirect({
             method: 'POST'
         }, '/');
 
-        user.num_correct++;
+        details.User.num_correct++;
 
         res.send(twiml.toString());
     }
@@ -115,7 +113,7 @@ app.post('/completed', (req, res) => {
 function Ask(frontCard, backCard, SpeechResult, twiml, res) {
     if (SpeechResult !== undefined && SpeechResult.replace('.', '').toLowerCase().trim() === 'yes') {
         twiml.say('Skipping...');
-        user.num_correct += 1;
+        details.User.num_correct += 1;
         twiml.redirect({
             method: 'POST'
         }, '/');
@@ -125,7 +123,7 @@ function Ask(frontCard, backCard, SpeechResult, twiml, res) {
             method: 'POST'
         }, '/');
     } else {
-        twiml.say('Card ' + (user.num_correct + 1));
+        twiml.say('Card ' + (details.User.num_correct + 1));
         twiml.gather({
           input: 'speech',
           timeout: 3,
@@ -134,7 +132,7 @@ function Ask(frontCard, backCard, SpeechResult, twiml, res) {
         .say({
           voice: 'women',
         },
-        frontCard[user.num_correct]);
+        frontCard[details.User.num_correct]);
     }
 
     res.type('text/xml');
